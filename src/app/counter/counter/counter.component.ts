@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Store} from "@ngrx/store";
 
 @Component({
   selector: 'app-counter',
@@ -6,14 +7,17 @@ import { Component } from '@angular/core';
   styleUrls: ['./counter.component.css']
 })
 export class CounterComponent {
-counter:number=0;
-onIncrement(){
-  this.counter++;
-}
-  onDecrement(){
-  this.counter--;
+// counter:number=0;
+  constructor(private store: Store<{ counter: { counter: number } }>) {
   }
-  onReset(){
-  this.counter=0;
-  }
+
+// onIncrement(){
+//   this.counter++;
+// }
+//   onDecrement(){
+//   this.counter--;
+//   }
+//   onReset(){
+//   this.counter=0;
+//   }
 }
