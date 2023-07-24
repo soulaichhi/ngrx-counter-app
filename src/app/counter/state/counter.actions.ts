@@ -13,4 +13,7 @@ export const reset = createAction(
 export const customIncrement = createAction(
   '[Counter Page] Increment with custom value',
   props<{ count: number }>()
+);
+export const changeChannelName = createAction(
+  '[Counter Page] Change the channel Name'
 )
