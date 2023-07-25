@@ -8,7 +8,7 @@ import {Store} from "@ngrx/store";
 })
 export class CounterComponent {
 // counter:number=0;
-  constructor(private store: Store<{ counter: { counter: number } }>) {
+  constructor() {
   }
 
 // onIncrement(){
