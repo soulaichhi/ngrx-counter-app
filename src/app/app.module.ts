@@ -10,7 +10,11 @@ import {HomeComponent} from './home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HeaderComponent} from './shared/components/header/header.component';
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {appReducer} from "./store/app.state";
+import {EffectsModule} from "@ngrx/effects";
+import {HttpClientModule} from "@angular/common/http";
+import {AngularFireModule} from "@angular/fire/compat";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import {environment} from "../environment/environment";
 
 
 @NgModule({
@@ -25,6 +29,7 @@ import {appReducer} from "./store/app.state";
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
@@ -33,7 +38,10 @@ import {appReducer} from "./store/app.state";
       traceLimit: 75, // maximum stack trace frames to be stored (in case trace option was provided as true)
     }),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
