@@ -15,6 +15,8 @@ import {HttpClientModule} from "@angular/common/http";
 import {AngularFireModule} from "@angular/fire/compat";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {environment} from "../environment/environment";
+import {LoadingSpinnerComponent} from './shared/components/loading-spinner/loading-spinner.component';
+import {appReducer} from "./store/app.state";
 
 
 @NgModule({
@@ -23,12 +25,13 @@ import {environment} from "../environment/environment";
 
     HomeComponent,
     HeaderComponent,
+    LoadingSpinnerComponent,
 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    StoreModule.forRoot({}),
+    StoreModule.forRoot(appReducer),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
