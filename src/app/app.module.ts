@@ -17,6 +17,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {environment} from "../environment/environment";
 import {LoadingSpinnerComponent} from './shared/components/loading-spinner/loading-spinner.component';
 import {appReducer} from "./store/app.state";
+import {AuthEffects} from "./auth/state/auth.effects";
 
 
 @NgModule({
@@ -32,7 +33,7 @@ import {appReducer} from "./store/app.state";
     BrowserModule,
     AppRoutingModule,
     StoreModule.forRoot(appReducer),
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

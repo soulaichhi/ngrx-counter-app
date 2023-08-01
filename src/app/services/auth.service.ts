@@ -9,6 +9,7 @@ import {User} from "../models/user.model";
   providedIn: 'root'
 })
 export class AuthService {
+  timeoutInterval!: any;
 
   constructor(private http: HttpClient) {
   }
@@ -42,5 +43,32 @@ export class AuthService {
       default:
         return 'Unknown Error'
     }
+  }
+
+  setUserInLocalStorage(user: User) {
+    localStorage.setItem('userData', JSON.stringify(user));
+    this.runTimeOutInterval(user)
+
+  }
+
+  runTimeOutInterval(user: User) {
+    const todayDate = new Date().getTime();
+    const expirationDate = user.expireDate.getTime();
+    const timeInterval = expirationDate - todayDate;
+    this.timeoutInterval = setTimeout(() => {
+      //logout functionality or refresh token
+    }, timeInterval)
+  }
+
+  getUserFromLocalStorage() {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      const expirationDate = new Date(userData.expireDate)
+      const user = new User(userData.email, userData.localId, userData.token, expirationDate);
+      this.runTimeOutInterval(user);
+      return user;
+    }
+    return null;
   }
 }

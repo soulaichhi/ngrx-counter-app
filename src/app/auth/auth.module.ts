@@ -6,8 +6,7 @@ import {LoginComponent} from './login/login.component';
 import {ReactiveFormsModule} from "@angular/forms";
 
 import {EffectsModule} from "@ngrx/effects";
-import {AuthEffects} from "./state/auth.effects";
-import { SignupComponent } from './signup/signup.component';
+import {SignupComponent} from './signup/signup.component';
 
 
 @NgModule({
@@ -19,7 +18,7 @@ import { SignupComponent } from './signup/signup.component';
     CommonModule,
     AuthRoutingModule,
     ReactiveFormsModule,
-    EffectsModule.forFeature([AuthEffects]),
+    EffectsModule.forFeature(),
 
   ]
 })
