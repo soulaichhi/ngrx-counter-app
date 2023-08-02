@@ -4,6 +4,8 @@ import {environment} from "../../environment/environment";
 import {AuthResponseData} from "../models/auth-response-data.model";
 import {Observable} from "rxjs";
 import {User} from "../models/user.model";
+import {Store} from "@ngrx/store";
+import {AppState} from "../store/app.state";
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +13,14 @@ import {User} from "../models/user.model";
 export class AuthService {
   timeoutInterval!: any;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private store: Store<AppState>) {
   }
 
   login(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebase.apiKey}`,
       {email, password, returnSecureToken: true})
   }
+
 
   signUp(email: string, password: string): Observable<AuthResponseData> {
     return this.http.post<AuthResponseData>(
@@ -45,20 +48,22 @@ export class AuthService {
     }
   }
 
+  runTimeOutInterval(user: User) {
+    const todayDate = new Date().getTime();
+    const expirationDate = user.expireDate.getTime();
+    const timeInterval = expirationDate - todayDate;
+    this.timeoutInterval = setTimeout(() => {
+      
+      //logout functionality or refresh token
+    }, timeInterval)
+  }
+
   setUserInLocalStorage(user: User) {
     localStorage.setItem('userData', JSON.stringify(user));
     this.runTimeOutInterval(user)
 
   }
 
-  runTimeOutInterval(user: User) {
-    const todayDate = new Date().getTime();
-    const expirationDate = user.expireDate.getTime();
-    const timeInterval = expirationDate - todayDate;
-    this.timeoutInterval = setTimeout(() => {
-      //logout functionality or refresh token
-    }, timeInterval)
-  }
 
   getUserFromLocalStorage() {
     const userDataString = localStorage.getItem('userData');
@@ -70,5 +75,14 @@ export class AuthService {
       return user;
     }
     return null;
+  }
+
+  logout() {
+    localStorage.removeItem('userData');
+    if (this.timeoutInterval) {
+
+      clearTimeout(this.timeoutInterval);
+      this.timeoutInterval = null
+    }
   }
 }
