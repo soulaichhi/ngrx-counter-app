@@ -7,12 +7,17 @@ import {EditPostComponent} from "./edit-post/edit-post.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {StoreModule} from "@ngrx/store";
 import {postsReducer} from "./state/posts.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {PostsEffects} from "./state/posts.effects";
 
 @NgModule({
   declarations: [PostsListComponent,
     AddPostComponent,
     EditPostComponent],
-  imports: [CommonModule, PostsRoutingModule, ReactiveFormsModule, StoreModule.forFeature('posts', postsReducer)],
+  imports: [CommonModule,
+    PostsRoutingModule, ReactiveFormsModule,
+    StoreModule.forFeature('posts', postsReducer),
+    EffectsModule.forFeature([PostsEffects])],
   exports: []
 })
 export class PostsModule {
