@@ -1,24 +1,24 @@
-import {isDevMode, NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { isDevMode, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
+import { AppComponent } from './app.component';
 
-import {StoreModule} from "@ngrx/store";
+import { StoreModule } from '@ngrx/store';
 
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HomeComponent} from './home/home.component';
-import {AppRoutingModule} from "./app-routing.module";
-import {HeaderComponent} from './shared/components/header/header.component';
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
-import {EffectsModule} from "@ngrx/effects";
-import {HttpClientModule} from "@angular/common/http";
-import {AngularFireModule} from "@angular/fire/compat";
-import {AngularFireAuthModule} from "@angular/fire/compat/auth";
-import {environment} from "../environment/environment";
-import {LoadingSpinnerComponent} from './shared/components/loading-spinner/loading-spinner.component';
-import {appReducer} from "./store/app.state";
-import {AuthEffects} from "./auth/state/auth.effects";
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HomeComponent } from './home/home.component';
+import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { environment } from '../environment/environment';
+import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loading-spinner.component';
+import { appReducer } from './store/app.state';
+import { AuthEffects } from './auth/state/auth.effects';
+import { AuthTokenInterceptor } from './services/authToken.interceptor';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,6 @@ import {AuthEffects} from "./auth/state/auth.effects";
     HomeComponent,
     HeaderComponent,
     LoadingSpinnerComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -45,10 +44,11 @@ import {AuthEffects} from "./auth/state/auth.effects";
     ReactiveFormsModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
+    AngularFireAuthModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
