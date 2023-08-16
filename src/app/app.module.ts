@@ -19,6 +19,7 @@ import { LoadingSpinnerComponent } from './shared/components/loading-spinner/loa
 import { appReducer } from './store/app.state';
 import { AuthEffects } from './auth/state/auth.effects';
 import { AuthTokenInterceptor } from './services/authToken.interceptor';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { AuthTokenInterceptor } from './services/authToken.interceptor';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthTokenInterceptor, multi: true },
