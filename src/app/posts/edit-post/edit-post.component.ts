@@ -19,13 +19,22 @@ export class EditPostComponent implements OnInit, OnDestroy {
   postSubscription!: Subscription;
 
   constructor(
-    private route: ActivatedRoute,
     private store: Store<AppState>,
     private router: Router,
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
+    this.createForm();
+    this.postSubscription = this.store.select(getPostById).subscribe((post) => {
+      if (post) {
+        this.post = post;
+        this.postForm.patchValue({
+          title: post?.title,
+          description: post?.description,
+        });
+      }
+    });
+    /*this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       this.postSubscription = this.store
         .select(getPostById, { id })
@@ -33,7 +42,7 @@ export class EditPostComponent implements OnInit, OnDestroy {
           this.post = data;
           this.createForm();
         });
-    });
+    });*/
   }
 
   ngOnDestroy() {
@@ -44,7 +53,7 @@ export class EditPostComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.postForm = new FormGroup({
-      title: new FormControl(this.post?.title, [
+      title: new FormControl(null, [
         Validators.required,
         Validators.minLength(6),
       ]),
@@ -68,6 +77,7 @@ export class EditPostComponent implements OnInit, OnDestroy {
       description,
     };
     this.store.dispatch(updatePost({ post }));
+    //handle this navigation in the sideEffects file
     this.router.navigateByUrl('/posts');
   }
 
