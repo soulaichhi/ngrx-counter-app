@@ -9,11 +9,13 @@ import {StoreModule} from "@ngrx/store";
 import {postsReducer} from "./state/posts.reducer";
 import {EffectsModule} from "@ngrx/effects";
 import {PostsEffects} from "./state/posts.effects";
+import { SinglePostComponent } from './single-post/single-post.component';
 
 @NgModule({
   declarations: [PostsListComponent,
     AddPostComponent,
-    EditPostComponent],
+    EditPostComponent,
+    SinglePostComponent],
   imports: [CommonModule,
     PostsRoutingModule, ReactiveFormsModule,
     StoreModule.forFeature('posts', postsReducer),
