@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Store } from '@ngrx/store';
 import { AppState } from '../store/app.state';
+import { autoLogout } from '../auth/state/auth.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -63,6 +64,7 @@ export class AuthService {
     const expirationDate = user.expireDate.getTime();
     const timeInterval = expirationDate - todayDate;
     this.timeoutInterval = setTimeout(() => {
+      this.store.dispatch(autoLogout());
       //logout functionality or refresh token
     }, timeInterval);
   }
